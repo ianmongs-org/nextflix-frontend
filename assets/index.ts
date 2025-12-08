@@ -7,7 +7,7 @@ const movie5 = "/sinners.webp";
 const banner1 = movie4;
 const banner2 = "/f1-banner.jpg";
 
-const movieSamples = [movie1, movie2, movie3, movie4, movie5];
+export const movieSamples = [movie1, movie2, movie3, movie4, movie5];
 const bannerSamples = [banner1, banner2];
 
 export function getRandomMovie() {

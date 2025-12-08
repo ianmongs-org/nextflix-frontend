@@ -86,6 +86,12 @@ function LandingPage() {
           </div>
         </div>
       </div>
+      <div className="mt-10">
+        <h2 className="text-2xl font-bold font-sans">Recommended</h2>
+        <p className="text-muted-foreground mt-4 font-sans text-sm text-center">
+          Please sign in to see recommended movies and shows.
+        </p>
+      </div>
     </div>
   );
 }

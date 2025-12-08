@@ -20,9 +20,12 @@ function Navbar() {
         Nextflix
       </Link>
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon">
-          <FaBell className="size-4" />
-        </Button>
+        <Link
+          href="/search"
+          className="text-sm font-medium rounded-2xl border border-foreground/50 px-4 py-1.5 min-w-24 text-center"
+        >
+          Get Started
+        </Link>
         <Link
           href="/login"
           className="text-sm font-medium rounded-2xl border border-foreground/50 px-4 py-1.5 min-w-24 text-center"
