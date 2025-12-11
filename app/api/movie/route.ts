@@ -1,7 +1,4 @@
 import { NextResponse } from "next/server";
-const MOVIES_PATH =
-  "/discover/movie?include_adult=false&include_video=false&language=en-US&sort_by=popularity.desc";
-
 export interface Movie {
   adult: boolean;
   backdrop_path: string;
@@ -25,22 +22,6 @@ export interface MoviesResponse {
   total_results: number;
 }
 
-export interface Recommendation {
-  title: string;
-  overview: string;
-  genres: string;
-  rating: number;
-  posterUrl: string;
-  trailerUrl: string;
-  whyRecommended: string;
-}
-
-export interface RecommendationsResponse {
-  recommendations: Recommendation[];
-  reasoning: string;
-  processingTimeMs: number;
-}
-
 const options = {
   method: "GET",
   headers: {
@@ -49,10 +30,10 @@ const options = {
   },
 };
 
-async function getMovies(page = 1): Promise<MoviesResponse> {
+async function getMovies(query = ""): Promise<MoviesResponse> {
   const baseUrl = process.env.BASE_URL;
 
-  const url = `${baseUrl}${MOVIES_PATH}&page=${page}`;
+  const url = `${baseUrl}/search/movie?query=${query}&include_adult=false&language=en-US&page=1`;
 
   const response = await fetch(url, options);
 
@@ -68,10 +49,9 @@ async function getMovies(page = 1): Promise<MoviesResponse> {
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const pageParam = searchParams.get("page");
-    const page = pageParam ? Math.max(1, parseInt(pageParam, 10)) || 1 : 1;
+    const query = searchParams.get("query");
 
-    const movies = await getMovies(page);
+    const movies = await getMovies(query || "");
     return NextResponse.json(movies);
   } catch (error) {
     console.error(error);

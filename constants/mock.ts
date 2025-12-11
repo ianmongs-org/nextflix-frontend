@@ -101,3 +101,5 @@ const genresMap = new Map<number, string>([
 export function getGenreById(id: number): string | undefined {
   return genresMap.get(id);
 }
+
+export const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
