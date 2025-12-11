@@ -4,9 +4,13 @@ import Navbar from "./navbar";
 import { useRandomMovie } from "@/hooks/useRandomMovie";
 import { Button } from "./ui/button";
 import { FaRegCalendar, FaRegClock, FaPlay, FaInfo } from "react-icons/fa";
+import { useMovies } from "@/hooks/useMovies";
+import MovieCard from "./movie-card";
+import { Loader2 } from "lucide-react";
 
 function LandingPage() {
   const randomMovie = useRandomMovie();
+  const { data: movies, isLoading, error } = useMovies();
   return (
     <div className="max-w-7xl mx-auto my-0 p-2 z-20">
       <section className="mb-4">
@@ -87,10 +91,24 @@ function LandingPage() {
         </div>
       </div>
       <div className="mt-10">
-        <h2 className="text-2xl font-bold font-sans">Recommended</h2>
-        <p className="text-muted-foreground mt-4 font-sans text-sm text-center">
-          Please sign in to see recommended movies and shows.
-        </p>
+        <h2 className="text-2xl font-bold font-sans">Popular Movies</h2>
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4">
+          {isLoading && (
+            <div className="flex items-center justify-center">
+              <Loader2 className="w-4 h-4 animate-spin" />
+            </div>
+          )}
+          {error && (
+            <div className="flex items-center justify-center">
+              <p className="text-red-500 font-sans text-sm">
+                Error loading movies: {error.message}
+              </p>
+            </div>
+          )}
+          {movies?.results.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </div>
       </div>
     </div>
   );
