@@ -1,0 +1,30 @@
+services:
+  nextflix:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nextflix
+    ports:
+      - "3004:3004"
+    environment:
+      - NODE_ENV=production
+      - PORT=3004
+      - HOSTNAME=0.0.0.0
+      - API_READ_ACCESS_TOKEN=${API_READ_ACCESS_TOKEN}
+      - API_KEY=${API_KEY}
+      - BASE_URL=${BASE_URL}
+      - MOVIES_PATH=${MOVIES_PATH}
+      - NEXT_PUBLIC_NEXTFLIX_API=${NEXT_PUBLIC_NEXTFLIX_API}
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').get('http://localhost:3004', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
