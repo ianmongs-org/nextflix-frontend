@@ -2,7 +2,7 @@
 import { movieSamples } from "@/assets";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import { useMovie, useMovies } from "@/hooks/useMovies";
+import { useMovies } from "@/hooks/useMovies";
 import MovieCard from "@/components/movie-card";
 import { Loader2, Search, X } from "lucide-react";
 import { useState, useMemo } from "react";
@@ -26,6 +26,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { IMAGE_BASE_URL } from "@/constants/mock";
+import { useDebouncedMovies } from "@/hooks/useMovies";
 
 function SearchPage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,7 +37,7 @@ function SearchPage() {
     data: searchedMovies,
     isLoading: isSearching,
     error: searchError,
-  } = useMovie(searchQuery);
+  } = useDebouncedMovies(searchQuery);
   const router = useRouter();
 
   const handleSelectMovie = (movie: Movie) => {

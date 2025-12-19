@@ -4,6 +4,7 @@ import {
   RecommendationsResponse,
 } from "@/app/api/movies/route";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 async function fetchMovies(page: number): Promise<MoviesResponse> {
   const response = await fetch(`/api/movies?page=${page}`);
@@ -47,6 +48,26 @@ async function getMovie(query = ""): Promise<MoviesResponse> {
     };
   }
 }
+
+export const useDebouncedMovies = (
+  query: string = "",
+  delay: number = 1000
+) => {
+  const [debouncedQuery, setDebouncedQuery] = useState(query);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, delay);
+    return () => clearTimeout(timeout);
+  }, [query, delay]);
+
+  return useQuery({
+    queryKey: ["debouncedMovies", debouncedQuery],
+    queryFn: () => getMovie(debouncedQuery),
+    enabled: debouncedQuery.length > 0,
+  });
+};
 
 export const useMovie = (query: string = "") => {
   return useQuery({
